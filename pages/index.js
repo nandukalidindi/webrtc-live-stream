@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 
 const CAMERA_CONSTRAINTS = {
-  audio: true,
   video: { width: 960, height: 540 }
 };
 
@@ -15,7 +14,6 @@ export default () => {
 
   const inputStreamRef = useRef();
   const videoRef = useRef();
-  const canvasRef = useRef();
   const wsRef = useRef();
   const mediaRecorderRef = useRef();
   const requestAnimationRef = useRef();
@@ -28,37 +26,9 @@ export default () => {
 
     videoRef.current.srcObject = inputStreamRef.current;
 
-    await videoRef.current.play();
-
-    // We need to set the canvas height/width to match the video element.
-    canvasRef.current.height = videoRef.current.clientHeight;
-    canvasRef.current.width = videoRef.current.clientWidth;
-
-    requestAnimationRef.current = requestAnimationFrame(updateCanvas);
+    await videoRef.current.play();    
 
     setCameraEnabled(true);
-  };
-
-  const updateCanvas = () => {
-    if (videoRef.current.ended || videoRef.current.paused) {
-      return;
-    }
-
-    const ctx = canvasRef.current.getContext('2d');
-
-    ctx.drawImage(
-      videoRef.current,
-      0,
-      0,
-      videoRef.current.clientWidth,
-      videoRef.current.clientHeight
-    );
-
-    ctx.fillStyle = '#ff0000';
-    ctx.font = '50px monospace';
-    ctx.fillText(`Oh hi, ${nameRef.current}`, 5, 50);
-
-    requestAnimationRef.current = requestAnimationFrame(updateCanvas);
   };
 
   const stopStreaming = () => {
@@ -83,23 +53,20 @@ export default () => {
       stopStreaming();
     });
 
-    const videoOutputStream = canvasRef.current.captureStream(30); // 30 FPS
+    const videoTracks = inputStreamRef.current.getTracks(); // 30 FPS
 
     // Let's do some extra work to get audio to join the party.
     // https://hacks.mozilla.org/2016/04/record-almost-everything-in-the-browser-with-mediarecorder/
-    const audioStream = new MediaStream();
-    const audioTracks = inputStreamRef.current.getAudioTracks();
-    audioTracks.forEach(function(track) {
-      audioStream.addTrack(track);
-    });
+    // const audioStream = new MediaStream();
+    // const audioTracks = inputStreamRef.current.getAudioTracks();
+    // audioTracks.forEach(function(track) {
+    //   audioStream.addTrack(track);
+    // });
 
     const outputStream = new MediaStream();
-    [audioStream, videoOutputStream].forEach(function(s) {
-        s.getTracks().forEach(function(t) {
-            outputStream.addTrack(t);
-        });
+    videoTracks.forEach(function(t) {
+      outputStream.addTrack(t);
     });
-
 
     mediaRecorderRef.current = new MediaRecorder(outputStream, {
       mimeType: 'video/webm',
@@ -121,12 +88,6 @@ export default () => {
   useEffect(() => {
     nameRef.current = shoutOut;
   }, [shoutOut]);
-
-  useEffect(() => {
-    return () => {
-      cancelAnimationFrame(requestAnimationRef.current);
-    }
-  }, []);
 
   return (
     <div style={{ maxWidth: '980px', margin: '0 auto' }}>
@@ -169,16 +130,7 @@ export default () => {
         <div className="column">
           <h2>Input</h2>
           <video ref={videoRef} controls width="100%" height="auto" muted></video>
-        </div>
-        <div className="column">
-          <h2>Output</h2>
-          <canvas ref={canvasRef}></canvas>
-          <input
-            placeholder="Shout someone out!"
-            type="text"
-            onChange={e => setShoutOut(e.target.value)}
-          />
-        </div>
+        </div>        
       </div>
     </div>
   );
