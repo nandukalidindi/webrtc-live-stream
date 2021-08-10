@@ -33,7 +33,7 @@ app.prepare().then(() => {
     const params = new URLSearchParams(queryString);
     const key = params.get('key');
 
-    const rtmpUrl = `rtmp://localhost/show/${key}`;
+    const rtmpUrl = `rtmp://ec2-18-118-122-227.us-east-2.compute.amazonaws.com/show/${key}`;
 
     const ffmpeg = child_process.spawn('ffmpeg', [
       '-i','-',

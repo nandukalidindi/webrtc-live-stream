@@ -1,0 +1,4 @@
+Error similar to https://github.com/google/mediapipe/issues/1373
+
+Tried https://stackoverflow.com/questions/48147356/install-qt-on-ubuntu [DID NOT WORK!!!]
+
