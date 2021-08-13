@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 
 const CAMERA_CONSTRAINTS = {
-  video: { width: 960, height: 540 }
+  video: { width: 640, height: 360 }
 };
 
 export default () => {

@@ -33,7 +33,9 @@ app.prepare().then(() => {
     const params = new URLSearchParams(queryString);
     const key = params.get('key');
 
-    const rtmpUrl = `rtmp://ec2-18-118-122-227.us-east-2.compute.amazonaws.com/show/${key}`;
+    // const rtmpUrl = `rtmp://ec2-18-118-122-227.us-east-2.compute.amazonaws.com/show/${key}`;
+    // const rtmpUrl = `rtmp://localhost/show/${key}`
+    const rtmpUrl = `rtmp://jfk.contribute.live-video.net/app/live_709066237_qGx2X9l32qsfvxT3bmYLZlNXKhH6zc`
 
     const ffmpeg = child_process.spawn('ffmpeg', [
       '-i','-',
@@ -45,7 +47,7 @@ app.prepare().then(() => {
       // '-c:a', 'aac', '-strict', '-2', '-ar', '44100', '-b:a', '64k',
 
       //force to overwrite
-      '-y',
+      // '-y',
 
       // used for audio sync
       // '-use_wallclock_as_timestamps', '1',
@@ -53,7 +55,7 @@ app.prepare().then(() => {
 
       //'-filter_complex', 'aresample=44100', // resample audio to 44100Hz, needed if input is not 44100
       //'-strict', 'experimental',
-      '-bufsize', '960k',
+      '-bufsize', '1280k',
       '-f', 'flv',
 
       rtmpUrl
