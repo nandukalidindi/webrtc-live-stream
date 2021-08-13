@@ -34,8 +34,7 @@ app.prepare().then(() => {
     const key = params.get('key');
 
     // const rtmpUrl = `rtmp://ec2-18-118-122-227.us-east-2.compute.amazonaws.com/show/${key}`;
-    // const rtmpUrl = `rtmp://localhost/show/${key}`
-    const rtmpUrl = `rtmp://jfk.contribute.live-video.net/app/live_709066237_qGx2X9l32qsfvxT3bmYLZlNXKhH6zc`
+    const rtmpUrl = `rtmp://localhost/show/${key}`
 
     const ffmpeg = child_process.spawn('ffmpeg', [
       '-i','-',

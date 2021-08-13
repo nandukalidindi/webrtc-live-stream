@@ -7,5 +7,7 @@ Code sample from https://mux.com/blog/the-state-of-going-live-from-a-browser/
 
 # Docker steps
 docker build -t yolov5
+
+docker run -p 1935:1935 rtmp-server
 docker run --network="host" -it yolov5 // for localhost access inside the docker environment
-python detect.py --source 'rtmp://localhost/show/test'
+python detect.py --weights 'fire_and_smoke.pt' --source 'rtmp://localhost/show/test'
