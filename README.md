@@ -6,7 +6,7 @@ NOTE: This is not using WebRTC yet, getUserMedia usage !== WebRTC. ICE candidate
 Code sample from https://mux.com/blog/the-state-of-going-live-from-a-browser/
 
 # Docker steps
-docker build -t yolov5
+docker build -t yolov5 .
 
 docker run -p 1935:1935 rtmp-server
 docker run --network="host" -it yolov5 // for localhost access inside the docker environment
