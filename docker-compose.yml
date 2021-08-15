@@ -1,0 +1,7 @@
+services:
+  rtmp:
+    build: .
+    ports: 
+      - "1935:1935"
+  yolov5:
+    image: "ultralytics/yolov5:latest"
